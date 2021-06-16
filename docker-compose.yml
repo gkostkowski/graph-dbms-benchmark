@@ -1,0 +1,42 @@
+version: "2.2"
+
+services:
+  redis:
+    image: redisgraph_test
+    build: ./redis
+    container_name: testredisgraph
+    environment:
+      IMPORT_DIR: /import/eurovoc
+      QUERY_GRAPH: eurovoc
+      RESULTS_DIR: /results/eurovoc
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/queries:/queries
+      - ./redis/import:/import
+      - ./redis/results:/results
+    # mem_limit: 1073741824
+
+  neo4j:
+    image: neo4j_test
+    build: ./neo4j
+    container_name: testneo4j
+    environment:
+      NEO4J_AUTH: neo4j/benchpasswd
+      IMPORT_DIR: /import/eurovoc
+      QUERY_GRAPH: eurovoc
+      RESULTS_DIR: /results/eurovoc
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+     - neo4j_data:/data
+     - ./neo4j/queries:/queries
+     - ./neo4j/import:/var/lib/neo4j/import
+     - ./neo4j/logs:/logs
+    # mem_limit: 1073741824
+
+volumes:
+  redis_data:
+  neo4j_data:

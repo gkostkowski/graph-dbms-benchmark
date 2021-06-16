@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Imports data from files in specified directory. Import directory can be given
+# by setting IMPORT_DIR env variable or by passing path as positional parameter.
+# If none is given, then import dir defaults to '/var/lib/neo4j/import'. 
+# Note: name of dir will be  used as name of new database and names of files
+# will be used as names of entities types
+sep=$'\t'
+import_dir="${IMPORT_DIR:-$1}"
+import_dir="${import_dir:-/var/lib/neo4j/import}"
+
+dir_name="${import_dir##*/}"  # will be used as a name of graph
+
+echo "Importing data from $import_dir ..."
+cd "$import_dir"
+
+# construct string with params for loader
+dumps_params=''
+while read filepath; do
+	file=$(basename -- "$filepath")
+	filename="${filename%.*}"
+	header=$(head -n 1 "$file")
+	if [[ $header =~ (:START_ID) ]] && [[ $header =~ (:END_ID) ]]; then
+		dumps_params="${dumps_params} --relationships=$filename=$file "
+	else
+		dumps_params="${dumps_params} --nodes=$filename=$file "
+	fi
+done < <(find $PWD -type f)
+
+echo "$dumps_params"
+
+neo4j-admin import \
+	--database "$dir_name" \
+	--delimiter="$sep" \
+	$dumps_params

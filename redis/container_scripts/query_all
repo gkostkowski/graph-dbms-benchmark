@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# runs all queries
+QUERIES_PATH="${QUERIES_PATH:-/queries}"
+RESULTS_DIR="${RESULTS_DIR:-/results}"
+if [ ! -z "$RESULTS_DIR" ]; then
+	timestamp=`date +'%Y%m%dT%H%M%S'`
+	RESULTS_PATH="${RESULTS_DIR}/results-${timestamp}.tsv"
+	mkdir -p "$RESULTS_DIR"
+fi
+
+while read query_file; do
+	if [ -z "$RESULTS_PATH" ]; then
+		echo -ne "${query_file}\t"
+		query "$query_file"
+	else
+		echo -ne "${query_file}\t" >> "$RESULTS_PATH"
+		query "$query_file" >> "$RESULTS_PATH"
+	fi
+	
+done < <(find "$QUERIES_PATH" -type f | sort)
+
+if [ ! -z "$RESULTS_PATH" ]; then
+	echo "Results stored in $RESULTS_PATH"
+fi

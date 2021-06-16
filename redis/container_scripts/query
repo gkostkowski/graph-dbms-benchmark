@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Script facilitates executing scripts; receives query container path
+# and outputs execution time
+
+query_remote_path="$1"
+graph_name="$QUERY_GRAPH"
+if [ -z "$QUERY_GRAPH" ]; then
+	l=$(mktemp)
+	list_graphs > "$l"
+	db_no=$(wc -l < "$l")
+	if [ $db_no -gt 1 ]; then
+		echo "ERROR: name of graph to query not given and more than one graph "
+		echo "is present: "
+		cat "$l"
+		rm -f "$l"
+		exit 1
+	else
+		graph_name=$(head -n 1 < "$l")
+		rm -f "$l"
+	fi
+fi
+
+tmp=$(mktemp)
+redis-cli -x --raw GRAPH.QUERY "$graph_name" < "$query_remote_path" \
+	> "$tmp"
+
+tail -n 1 "$tmp" \
+	| sed -r 's/Query internal execution time: *([0-9]+[.,]*[0-9]*) *milliseconds/\1/'
+
+rm -f "$tmp"
