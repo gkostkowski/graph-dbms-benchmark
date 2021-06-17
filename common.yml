@@ -1,0 +1,52 @@
+version: "2.2"
+
+# these services are not intended to be launched,
+# use sevices deriving that configuration placed in docker-compose.yml instead
+services:
+  redis:
+    environment:
+      IMPORT_DIR: /import
+    image: redisgraph_test
+    build: ./redis
+    container_name: testredisgraph
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./results/redis:/results
+      - ./redis/setup:/setup
+
+  neo4j:
+    image: neo4j_test
+    build: ./neo4j
+    container_name: testneo4j
+    command: neo4j
+    environment:
+      NEO4J_AUTH_USER: neo4j
+      NEO4J_AUTH_PASSWD: benchpasswd
+      NEO4J_AUTH: neo4j/benchpasswd
+      # IMPORT_DIR: /var/lib/neo4j/import
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./neo4j/logs:/logs
+      - ./neo4j/setup:/setup
+      - ./results/neo4j:/results
+
+  neo4j-loader:
+    image: neo4j_test
+    build: ./neo4j
+    container_name: testneo4j_launcher
+    command: import
+    environment:
+      NEO4J_AUTH_USER: neo4j
+      NEO4J_AUTH_PASSWD: benchpasswd
+      NEO4J_AUTH: neo4j/benchpasswd
+      IMPORT_DIR: /var/lib/neo4j/import
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    restart: "no"
+    volumes:
+     - ./neo4j/import:/var/lib/neo4j/import
+     - ./neo4j/logs:/logs

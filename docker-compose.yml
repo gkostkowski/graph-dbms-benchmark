@@ -1,42 +1,72 @@
 version: "2.2"
 
 services:
-  redis:
-    image: redisgraph_test
-    build: ./redis
-    container_name: testredisgraph
+# EUROVOC
+  redis-eurovoc:
+    extends:
+      file: common.yml
+      service: redis
     environment:
-      IMPORT_DIR: /import/eurovoc
-      QUERY_GRAPH: eurovoc
       RESULTS_DIR: /results/eurovoc
-    ports:
-      - "6379:6379"
     volumes:
-      - redis_data:/data
-      - ./redis/queries:/queries
-      - ./redis/import:/import
-      - ./redis/results:/results
-    # mem_limit: 1073741824
+      - ./redis/queries_eurovoc:/queries
+      - ./redis/import/eurovoc:/import
+      - redis_data_eurovoc:/data
 
-  neo4j:
-    image: neo4j_test
-    build: ./neo4j
-    container_name: testneo4j
+  neo4j-eurovoc:
+    extends:
+      file: common.yml
+      service: neo4j
     environment:
-      NEO4J_AUTH: neo4j/benchpasswd
-      IMPORT_DIR: /import/eurovoc
-      QUERY_GRAPH: eurovoc
       RESULTS_DIR: /results/eurovoc
-    ports:
-      - "7474:7474"
-      - "7687:7687"
     volumes:
-     - neo4j_data:/data
-     - ./neo4j/queries:/queries
-     - ./neo4j/import:/var/lib/neo4j/import
-     - ./neo4j/logs:/logs
-    # mem_limit: 1073741824
+     - ./neo4j/queries_eurovoc:/queries
+     # - ./neo4j/import/eurovoc:/var/lib/neo4j/import
+     - neo4j_data_eurovoc:/data
+
+  neo4j-loader-eurovoc:
+    extends:
+      file: common.yml
+      service: neo4j-loader
+    volumes:
+     - ./neo4j/import/eurovoc:/var/lib/neo4j/import
+     - neo4j_data_eurovoc:/data
+
+
+# PLWN
+  redis-plwn:
+    extends:
+      file: common.yml
+      service: redis
+    environment:
+      RESULTS_DIR: /results/plwn
+    volumes:
+      - ./redis/queries_plwn:/queries
+      - ./redis/import/plwn:/import
+      - redis_data_plwn:/data
+
+  neo4j-plwn:
+    extends:
+      file: common.yml
+      service: neo4j
+    environment:
+      RESULTS_DIR: /results/plwn
+    volumes:
+     - ./neo4j/queries_plwn:/queries
+     # - ./neo4j/import/plwn:/var/lib/neo4j/import
+     - neo4j_data_plwn:/data
+
+  neo4j-loader-plwn:
+    extends:
+      file: common.yml
+      service: neo4j-loader
+    volumes:
+     - ./neo4j/import/plwn:/var/lib/neo4j/import
+     - neo4j_data_plwn:/data
+
 
 volumes:
-  redis_data:
-  neo4j_data:
+  redis_data_eurovoc:
+  redis_data_plwn:
+  neo4j_data_eurovoc:
+  neo4j_data_plwn:

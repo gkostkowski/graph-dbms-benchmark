@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# note: redisgraph supports only single-property indexing
+graph_name='default'
+CREATE_INDICES='CREATE INDEX IF NOT EXISTS FOR (c:concept) ON (c.lod_url);'
+CREATE_INDICES_COMPAT='CREATE INDEX ON :concept(lod_url);'
+# CREATE INDEX IF NOT EXISTS FOR (l:label) ON (l.text);
+# CREATE INDEX IF NOT EXISTS FOR (l:label) ON (l.text, l.lang);
+
+echo "$CREATE_INDICES_COMPAT" \
+	| redis-cli -x --raw GRAPH.QUERY "$graph_name"

@@ -1,29 +1,42 @@
-#!/bin/bash
+#!/usr/bin/env python3
+from datetime import datetime
+import os
+import sys
+import time
 
-# Script facilitates executing scripts; receives query container path
-# and outputs execution time
+from neo4j import GraphDatabase, basic_auth
 
-query_remote_path="$1"
-graph_name="$QUERY_GRAPH"
-# if [ -z "$QUERY_GRAPH" ]; then
-	# l=$(mktemp)
-	# list_graphs > "$l"
-	# db_no=$(wc -l < "$l")
-	# if [ $db_no -gt 1 ]; then
-		# echo "ERROR: name of graph to query not given and more than one graph "
-		# echo "is present: "
-		# cat "$l"
-		# rm -f "$l"
-		# exit 1
-	# else
-		# graph_name=$(head -n 1 < "$l")
-		# rm -f "$l"
-	# fi
-# fi
+LOCAL_BOLT_ADDR = "bolt://localhost:7687"
 
-tmp=$(mktemp)
-cypher-shell -u neo4j -p neo4j --non-interactive 
-TIMEFORMAT="%3lR" && \
-	time { cypher-shell -u neo4j -p neodb --non-interactive < "$query_remote_path" > /dev/null ; }
+results_dir = os.environ.get('RESULTS_DIR', None)
+try:
+    neo_auth = os.environ['NEO4J_AUTH']
+    neo_user, neo_passwd = neo_auth.split('/')
+except KeyError:
+    print("ERROR: NEO4J_AUTH environment variable not defined!")
+    raise
 
-rm -f "$tmp"
+query_path = sys.argv[1]
+with open(query_path, 'r') as f:
+    query = f.read().rstrip('\n')
+
+driver = GraphDatabase.driver(LOCAL_BOLT_ADDR, auth=(neo_user, neo_passwd))
+
+with driver.session() as session:
+    total_time = 0
+    with session.begin_transaction() as tx:
+        start = time.time()
+        result = tx.run(query)
+        records = list(result)  # consume the records
+        tx.commit()
+        total_time += time.time() - start
+        if results_dir:
+            timestamp = str(datetime.now().strftime('%Y_%m_%d_%H%M%S'))
+            query_name = os.path.splitext(os.path.basename(query_path))[0]
+            time_res_path = f"{results_dir}/results-{query_name}-{timestamp}"
+            with open(time_res_path, 'w') as ofile:
+                for r in records:
+                    ofile.write(str(r) + '\n')
+
+total_time = total_time * 1000
+print(total_time)

@@ -9,7 +9,9 @@ sep=$'\t'
 import_dir="${IMPORT_DIR:-$1}"
 import_dir="${import_dir:-/var/lib/neo4j/import}"
 
-dir_name="${import_dir##*/}"  # will be used as a name of graph
+# dir_name="${import_dir##*/}"  # will be used as a name of graph
+db_name='neo4j'  # default database, changing will require config modification
+				 # in order to make non-default database visible
 
 echo "Importing data from $import_dir ..."
 cd "$import_dir"
@@ -18,18 +20,23 @@ cd "$import_dir"
 dumps_params=''
 while read filepath; do
 	file=$(basename -- "$filepath")
-	filename="${filename%.*}"
+	filename="${file%.*}"
 	header=$(head -n 1 "$file")
 	if [[ $header =~ (:START_ID) ]] && [[ $header =~ (:END_ID) ]]; then
-		dumps_params="${dumps_params} --relationships=$filename=$file "
+		dumps_params="${dumps_params} --relationships=${filename}=${file} "
 	else
-		dumps_params="${dumps_params} --nodes=$filename=$file "
+		dumps_params="${dumps_params} --nodes=${filename}=${file} "
 	fi
 done < <(find $PWD -type f)
 
 echo "$dumps_params"
 
 neo4j-admin import \
-	--database "$dir_name" \
+	--database "$db_name" \
 	--delimiter="$sep" \
 	$dumps_params
+
+# neo4j-admin import \
+	# --database "$dir_name" \
+	# --delimiter="$sep" \
+	# $dumps_params

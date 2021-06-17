@@ -9,7 +9,8 @@ sep=$'\t'
 import_dir="${IMPORT_DIR:-$1}"
 import_dir="${import_dir:-/import}"
 
-dir_name="${import_dir##*/}"  # will be used as a name of graph
+# dir_name="${import_dir##*/}"  # will be used as a name of graph
+db_name='default'
 
 echo "Importing data from $import_dir ..."
 cd "$import_dir"
@@ -27,7 +28,7 @@ done < <(find $PWD -type f)
 
 # echo "$dumps_params"
 
-redisgraph-bulk-loader "$dir_name" \
+redisgraph-bulk-loader "$db_name" \
 	--enforce-schema \
 	--separator "$sep" \
 	$dumps_params

@@ -4,8 +4,8 @@
 QUERIES_PATH="${QUERIES_PATH:-/queries}"
 RESULTS_DIR="${RESULTS_DIR:-/results}"
 if [ ! -z "$RESULTS_DIR" ]; then
-	timestamp=`date +'%Y%m%dT%H%M%S'`
-	RESULTS_PATH="${RESULTS_DIR}/results-${timestamp}.tsv"
+	timestamp=`date +'%Y_%m_%d_%H%M%S'`
+	RESULTS_PATH="${RESULTS_DIR}/times-${timestamp}.tsv"
 	mkdir -p "$RESULTS_DIR"
 fi
 

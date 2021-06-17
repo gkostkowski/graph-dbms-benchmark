@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CREATE_INDICES='CREATE INDEX IF NOT EXISTS FOR (c:concept) ON (c.lod_url);'
+# CREATE INDEX IF NOT EXISTS FOR (l:label) ON (l.text);
+# CREATE INDEX IF NOT EXISTS FOR (l:label) ON (l.text, l.lang);
+
+echo "$CREATE_INDICES" \
+	| cypher-shell -u "$NEO4J_AUTH_USER" -p "$NEO4J_AUTH_PASSWD" --non-interactive

@@ -75,6 +75,7 @@ class TermWriter(object):
                 raise ValueError(f"Value for compulosry key '{p}' not given!")
             col_vals.append(d[p])
         line = self._sep.join([str(e) for e in col_vals])
+        line = line.replace('"', '\\"')
         self._writer.write(line + '\n')
 
     def _extract_id(self, d):
@@ -264,7 +265,7 @@ class Handler(object):
 def literal_repr(rdf_literal):
     assert isinstance(rdf_literal, Literal)
     text, lang = rdf_literal.toPython(), rdf_literal.language
-    text = text.replace('\n', ' ')
+    text = str(text).replace('\n', ' ')
     text = text.replace('\r', ' ')
     text = text.replace('\t', ' ')
     text = text.strip()

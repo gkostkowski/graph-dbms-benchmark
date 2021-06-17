@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Run script after starting the database
+
+setup_scripts_dir="${SETUP_DIR:-/setup}"
+
+while read script; do
+	echo "Executing $script ..."
+	$script
+done < <(find "$setup_scripts_dir" -type f)

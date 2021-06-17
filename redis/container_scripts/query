@@ -4,22 +4,23 @@
 # and outputs execution time
 
 query_remote_path="$1"
-graph_name="$QUERY_GRAPH"
-if [ -z "$QUERY_GRAPH" ]; then
-	l=$(mktemp)
-	list_graphs > "$l"
-	db_no=$(wc -l < "$l")
-	if [ $db_no -gt 1 ]; then
-		echo "ERROR: name of graph to query not given and more than one graph "
-		echo "is present: "
-		cat "$l"
-		rm -f "$l"
-		exit 1
-	else
-		graph_name=$(head -n 1 < "$l")
-		rm -f "$l"
-	fi
-fi
+graph_name="default"
+# graph_name="$QUERY_GRAPH"
+# if [ -z "$QUERY_GRAPH" ]; then
+	# l=$(mktemp)
+	# list_graphs > "$l"
+	# db_no=$(wc -l < "$l")
+	# if [ $db_no -gt 1 ]; then
+		# echo "ERROR: name of graph to query not given and more than one graph "
+		# echo "is present: "
+		# cat "$l"
+		# rm -f "$l"
+		# exit 1
+	# else
+		# graph_name=$(head -n 1 < "$l")
+		# rm -f "$l"
+	# fi
+# fi
 
 tmp=$(mktemp)
 redis-cli -x --raw GRAPH.QUERY "$graph_name" < "$query_remote_path" \
@@ -28,4 +29,13 @@ redis-cli -x --raw GRAPH.QUERY "$graph_name" < "$query_remote_path" \
 tail -n 1 "$tmp" \
 	| sed -r 's/Query internal execution time: *([0-9]+[.,]*[0-9]*) *milliseconds/\1/'
 
-rm -f "$tmp"
+if [ ! -z "$RESULTS_DIR" ];then
+	timestamp=`date +'%Y_%m_%d_%H%M%S'`
+	query=$(basename -- "$query_remote_path")
+	query_name="${query%.*}"
+	RESULTS_PATH="${RESULTS_DIR}/results-${query_name}-${timestamp}"
+	mkdir -p "$RESULTS_DIR"
+	head -n -1 "$tmp" > "$RESULTS_PATH"
+else
+	rm -f "$tmp"
+fi
