@@ -1,0 +1,28 @@
+LET en_labels = (FOR l in label
+  FILTER l.lang == "en"
+  RETURN l)
+
+LET substr_labels = (
+  FOR l1 IN en_labels
+    FOR l2 IN en_labels
+      FILTER CONTAINS(l1.text, l2.text)
+      RETURN {
+        "longer": l1,
+        "shorter": l2
+      }
+)
+
+FOR lbls in substr_labels
+  FOR v1, e1 in OUTBOUND lbls.longer._id
+    prefLabel, altLabel
+    FOR v2, e2 in OUTBOUND lbls.shorter._id
+      prefLabel, altLabel
+      FOR v3, e3 in OUTBOUND v1._id
+      broader
+      FILTER e3._from == v1._id AND e3._to == v2._id
+RETURN {
+    text1: lbls.longer.text,
+    lod_url1: v1.lod_url,
+    lod_url2: v2.lod_url,
+    text2: lbls.shorter.text
+}

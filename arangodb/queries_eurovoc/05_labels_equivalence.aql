@@ -1,0 +1,18 @@
+LET en_labels = (FOR l1 in label
+  FILTER l1.lang == "en"
+  RETURN l1.text)
+
+LET pl_labels = (FOR l2 in label
+  FILTER l2.lang == "pl"
+  RETURN l2.text)
+
+LET eq_labels = (INTERSECTION(pl_labels, en_labels))
+
+FOR l in label
+  FILTER POSITION(eq_labels, l.text)
+  FOR v, e in 1..1 INBOUND l._id
+  prefLabel, altLabel
+  RETURN {
+    text: l.text,
+    lod_url: v.lod_url
+  }

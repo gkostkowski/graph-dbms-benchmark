@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# Imports data from files in specified directory. Import directory can be given
+# by setting IMPORT_DIR env variable or by passing path as positional parameter.
+# If none is given, then import dir defaults to '/var/lib/neo4j/import'. 
+# Note: name of dir will be  used as name of new database and names of files
+# will be used as names of entities types
+sep=$'\t'
+import_dir="${IMPORT_DIR:-$1}"
+import_dir="${import_dir:-/import}"
+REL_REF_IDX=/cfg/rel_ref_types.tsv
+
+# dir_name="${import_dir##*/}"  # will be used as a name of graph
+db_name='arangodb'  # default database, changing will require config modification
+				 # in order to make non-default database visible
+
+echo "Importing data from $import_dir ..."
+cd "$import_dir"
+
+# construct string with params for loader
+dumps_params=''
+rels_dumps_list=$(mktemp)
+while read filepath; do
+	file=$(basename -- "$filepath")
+	filename="${file%.*}"
+	header=$(head -n 1 "$file")
+	if [[ $header =~ (:START_ID) ]] && [[ $header =~ (:END_ID) ]]; then
+		echo "$filepath" >> "$rels_dumps_list"
+		# dumps_params="${dumps_params} --relationships=${filename}=${file} "
+	else
+		# if [[ "$filename" == "label" ]]; then
+			# # extra_translation='--translate "text:STRING=text" --translate "lang:STRING=lang"'
+			# extra_translation='--translate "text@lang123=text_lang"'
+		# else
+			# # extra_translation='--translate "lod_url:STRING=lod_url"'
+			# echo
+		# fi
+		# echo "$extra_translation"
+		arangoimport --file "$filepath" \
+			--collection "$filename" \
+			--create-collection true \
+			--translate ":ID=_key" \
+			--translate "text:STRING=text" \
+			--translate "lang:STRING=lang" \
+			--translate "lod_url:STRING=lod_url" \
+			--convert \
+			--type "tsv" \
+			--server.password "$ARANGO_ROOT_PASSWORD"
+			# $extra_translation \
+
+		# dumps_params="${dumps_params} --nodes=${filename}=${file} "
+	fi
+done < <(find $PWD -type f)
+
+while read filepath; do
+	file=$(basename -- "$filepath")
+	filename="${file%.*}"
+	src_type=$(awk -F '\t' -v r="$filename" '$1 == r {print $2}' "$REL_REF_IDX")
+	dst_type=$(awk -F '\t' -v r="$filename" '$1 == r {print $3}' "$REL_REF_IDX")
+	if [ -z "$src_type" ] || [ -z "$dst_type" ];then
+		echo "ERROR: Index $REL_REF_IDX does not specify type for $filename"
+		exit 1
+	fi
+	arangoimport --file "$filepath" \
+		--collection "$filename" \
+		--create-collection true \
+		--translate ":START_ID=_from" \
+		--translate ":END_ID=_to" \
+		--convert \
+		--type "tsv" \
+		--create-collection-type "edge" \
+		--from-collection-prefix "$src_type" \
+		--to-collection-prefix "$dst_type" \
+		--server.password "$ARANGO_ROOT_PASSWORD"
+done <"$rels_dumps_list"
+rm -f "$rels_dumps_list"

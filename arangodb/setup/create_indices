@@ -1,0 +1,3 @@
+db._useDatabase("_system");
+db.concept.ensureIndex({ type: "persistent", fields: [ "lod_url" ], unique: true});
+db.label.ensureIndex({ type: "persistent", fields: [ "text", "lang" ]});

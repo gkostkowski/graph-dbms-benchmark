@@ -1,0 +1,9 @@
+FOR l in label
+  FILTER l.lang == "en"
+  FOR v, e in INBOUND l._id
+    prefLabel
+    SORT l.text
+    LIMIT 50
+    RETURN {
+        text: l.text
+    }

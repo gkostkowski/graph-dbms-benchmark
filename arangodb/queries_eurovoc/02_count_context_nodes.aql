@@ -1,0 +1,10 @@
+let startNodeId = FIRST(FOR c in concept
+  FILTER c.lod_url == "http://eurovoc.europa.eu/5522"
+  LIMIT 1
+  RETURN c._id)
+
+FOR v, e, p in 1..5 OUTBOUND startNodeId
+  broader, related, prefLabel, altLabel, definition, 
+  editorialNote, inScheme, topConceptOf, scopeNote
+  COLLECT WITH COUNT INTO ctx_size
+  RETURN ctx_size

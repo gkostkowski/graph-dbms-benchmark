@@ -1,0 +1,9 @@
+FOR l in label
+  FILTER l.lang == "en"
+  FILTER CONTAINS(l.text, "car")
+  FOR v, e in INBOUND l._id
+    prefLabel, altLabel
+    RETURN {
+        lod_url: v.lod_url,
+        text: l.text
+    }

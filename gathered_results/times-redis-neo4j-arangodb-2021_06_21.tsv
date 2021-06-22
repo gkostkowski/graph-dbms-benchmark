@@ -1,0 +1,11 @@
+query,redisgraph,neo4j,arangodb
+01_count_relationships,112.49,567.2043857574463,0.159
+02b_count_context_nodes_nonexistent,0.222015,45.85398864746094,-1
+02_count_context_nodes,12.209376,148.1986915588379,65.240
+03_substring_check_simple,50.435712,370.2606620788574,146.292
+04_substring_check_complex,1215.266497,1043.073883056641,216000
+05_labels_equivalence,393.276225,516.9732189178467,3214
+06a_count_triangles,28123.217185,-1,-1
+06b_count_triangles,27949.824407,-1,-1
+07_get_sorted_labels,93.304795,244.22507774353027,1058
+08_shortest_path,-1,64.893,1.401

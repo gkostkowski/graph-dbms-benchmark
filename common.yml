@@ -50,3 +50,17 @@ services:
     volumes:
      - ./neo4j/import:/var/lib/neo4j/import
      - ./neo4j/logs:/logs
+
+  arangodb:
+    image: arangodb_test
+    build: ./arangodb
+    container_name: testarangodb
+    environment:
+      ARANGO_ROOT_PASSWORD: benchpasswd
+      IMPORT_DIR: /import
+    ports:
+      - "8529:8529"
+    volumes:
+      - ./results/arangodb:/results
+      - ./arangodb/import/rel_ref_types.tsv:/cfg/rel_ref_types.tsv
+      - ./arangodb/setup:/setup

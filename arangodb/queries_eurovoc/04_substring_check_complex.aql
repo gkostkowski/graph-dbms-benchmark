@@ -1,0 +1,18 @@
+FOR l1 in label
+  FILTER l1.lang == "en"
+  FOR l2 in label
+    FILTER l2.lang == "en"
+    FILTER CONTAINS(l1.text, l2.text)
+  FOR v1, e1 in OUTBOUND l1._id
+    prefLabel, altLabel
+    FOR v2, e2 in OUTBOUND l2._id
+      prefLabel, altLabel
+      FOR v3, e3 in OUTBOUND v1._id
+      broader
+      FILTER e3._from == v1._id AND e3._to == v2._id
+RETURN {
+    text1: l1.text,
+    lod_url1: v1.lod_url,
+    lod_url2: v2.lod_url,
+    text2: l2.text
+}

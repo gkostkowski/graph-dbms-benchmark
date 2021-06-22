@@ -1,0 +1,16 @@
+let creditId = FIRST(FOR c in concept
+  FILTER c.lod_url == "http://eurovoc.europa.eu/289"
+  LIMIT 1
+  RETURN c._id)
+
+let bureauOfConsumersId = FIRST(FOR c in concept
+  FILTER c.lod_url == "http://eurovoc.europa.eu/4859"
+  LIMIT 1
+  RETURN c._id)
+
+FOR v, e
+  IN OUTBOUND SHORTEST_PATH
+  creditId TO bureauOfConsumersId
+  broader, related, prefLabel, altLabel, definition,
+  editorialNote, inScheme, topConceptOf, scopeNote
+  return e

@@ -24,6 +24,17 @@ services:
      # - ./neo4j/import/eurovoc:/var/lib/neo4j/import
      - neo4j_data_eurovoc:/data
 
+  arangodb-eurovoc:
+    extends:
+      file: common.yml
+      service: arangodb
+    environment:
+      RESULTS_DIR: /results/eurovoc
+    volumes:
+      - ./redis/queries_arangodb:/queries
+      - ./arangodb/import/eurovoc:/import
+      - arangodb_data_eurovoc:/data
+
   neo4j-loader-eurovoc:
     extends:
       file: common.yml
@@ -70,3 +81,5 @@ volumes:
   redis_data_plwn:
   neo4j_data_eurovoc:
   neo4j_data_plwn:
+  arangodb_data_eurovoc:
+  arangodb_data_plwn:

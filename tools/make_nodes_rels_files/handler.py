@@ -171,6 +171,8 @@ class Handler(object):
         self._rels = defaultdict(list)
         self._label_key = label_key
         self._concept_key = concept_key
+        self._unique_concepts = set()
+        self._unique_labels = set()
         self._out_dir = out_dir
         _create_dir(out_dir)
         self._prop_predicates = prop_predicates if prop_predicates else set()
@@ -193,17 +195,25 @@ class Handler(object):
         self._rels_writers = {}
 
     def handle_concept(self, s):
-        self._concepts.append({
-            'lod_url': s.toPython()
-        })
+        s_val = s.toPython()
+        # comparing set size instead of checking if included to speed up execution
+        old_len = len(self._unique_concepts)
+        self._unique_concepts.add(s_val)
+        if len(self._unique_concepts) != old_len:  # if it was new item
+            self._concepts.append({
+                'lod_url': s_val
+            })
 
     def handle_label(self, o):
         text, lang, text_lang = literal_repr(o)
-        self._labels.append({
-            'text': text,
-            'lang': lang,
-            'text@lang': text_lang
-        })
+        old_len = len(self._unique_labels)
+        self._unique_labels.add(text_lang)
+        if len(self._unique_labels) != old_len:  # if it was new item
+            self._labels.append({
+                'text': text,
+                'lang': lang,
+                'text@lang': text_lang
+            })
 
     def handle_rel(self, s, p, o):
         if p in skos_uri_to_name_idx:
