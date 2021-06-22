@@ -81,82 +81,82 @@ _and thus data size may be different than specified in official sources_
 ## Cypher
 Queries used in benchmark:
 
-* 01_count_relationships](neo4j/queries_eurovoc/01_count_relationships.cypher)
+* [01_count_relationships](neo4j/queries_eurovoc/01_count_relationships.cypher)
 ```
 MATCH (c:concept)-[r:prefLabel]-(l:label)
 RETURN count(r);
 ```
 
-* 02b_count_context_nodes_nonexistent](neo4j/queries_eurovoc/02b_count_context_nodes_nonexistent.cypher)
+* [02b_count_context_nodes_nonexistent](neo4j/queries_eurovoc/02b_count_context_nodes_nonexistent.cypher)
 ```
 MATCH (n:concept)-[*5]->(m)
 WHERE n.lod_url = "http://eurovoc.europa.eu/dummy_id"
 RETURN count(m);
 ```
 
-* 02_count_context_nodes:eurovoc](neo4j/queries_eurovoc/02_count_context_nodes.cypher)
+* [02_count_context_nodes:eurovoc](neo4j/queries_eurovoc/02_count_context_nodes.cypher)
 ```
 MATCH (n:concept)-[*5]->(m)
 WHERE n.lod_url = "http://eurovoc.europa.eu/5522"
 RETURN count(m);
 ```
 
-* 02_count_context_nodes:plwn](neo4j/queries_plwn/02_count_context_nodes.cypher)
+* [02_count_context_nodes:plwn](neo4j/queries_plwn/02_count_context_nodes.cypher)
 ```
 MATCH (n:concept)-[*5]->(m)
 WHERE n.lod_url = "http://plwordnet.pwr.wroc.pl/wordnet/synset/295622"
 RETURN count(m);
 ```
 
-* 03_substring_check_simple](neo4j/queries_eurovoc/03_substring_check_simple.cypher)
+* [03_substring_check_simple](neo4j/queries_eurovoc/03_substring_check_simple.cypher)
 ```
 MATCH (n:concept)--(l:label {lang:"en"})
 WHERE l.text CONTAINS 'car'
 RETURN n, l
 ```
 
-* 04_substring_check_complex](neo4j/queries_eurovoc/04_substring_check_complex.cypher)
+* [04_substring_check_complex](neo4j/queries_eurovoc/04_substring_check_complex.cypher)
 ```
 MATCH (l1:label {lang:"en"})--(n1:concept)-[:broader|:narrower]-(n2:concept)--(l2:label {lang:"en"})
 WHERE l1.text CONTAINS l2.text
 RETURN n1, l1, n2, l2
 ```
 
-* 05_labels_equivalence](neo4j/queries_eurovoc/05_labels_equivalence.cypher)
+* [05_labels_equivalence](neo4j/queries_eurovoc/05_labels_equivalence.cypher)
 ```
 MATCH (l_pl:label {lang:"pl"})--(n:concept)--(l_en:label {lang:"en"})
 WHERE l_pl.text = l_en.text
 RETURN n, l_pl, l_en;
 ```
 
-* 06a_count_triangles](neo4j/queries_eurovoc/06a_count_triangles.cypher)
+* [06a_count_triangles](neo4j/queries_eurovoc/06a_count_triangles.cypher)
 ```
 MATCH (c1:concept)-[:prefLabel|:altLabel]-(l:label)-[:prefLabel|:altLabel]-(c2:concept)
 MATCH (c1)-[r*1..2]-(c2)
 RETURN count(r);
 ```
 
-* 06b_count_triangles](neo4j/queries_eurovoc/06b_count_triangles.cypher)
+* [06b_count_triangles](neo4j/queries_eurovoc/06b_count_triangles.cypher)
 ```
 MATCH (c1:concept)-[:prefLabel|:altLabel]-(l:label)-[:prefLabel|:altLabel]-(c2:concept)
 WITH c1, c2 (c1)-[r*1..2]-(c2)
 RETURN count(r);
 ```
 
-* 07a_shortest_path:eurovoc](neo4j/queries_eurovoc/07a_shortest_path.cypher)
+* [07a_shortest_path:eurovoc](neo4j/queries_eurovoc/07a_shortest_path.cypher)
 ```
 MATCH (credit:concept {lod_url:"http://eurovoc.europa.eu/289"}), (bureau_of_consumers:concept {lod_url:"http://eurovoc.europa.eu/4859"})
 RETURN shortestPath((credit)-[*..5]->(bureau_of_consumers));
 ```
 
-* 07a_shortest_path:plwn](neo4j/queries_plwn/07a_shortest_path.cypher)
+* [07a_shortest_path:plwn](neo4j/queries_plwn/07a_shortest_path.cypher)
 ```
 MATCH (dog:concept {lod_url:"http://plwordnet.pwr.wroc.pl/wordnet/synset/295622"}), (bone:concept {lod_url:"http://plwordnet.pwr.wroc.pl/wordnet/synset/6476"})
 RETURN shortestPath((dog)-[*..5]->(bone));
 
 ```
 
-* 08_get_sorted_labels](neo4j/queries_eurovoc/08_get_sorted_labels.cypher)
+* [08_get_sorted_labels](neo4j/queries_eurovoc/08_get_sorted_labels.cypher)
 ```
 MATCH (c:concept)-[r:prefLabel]-(l:label {lang:"en"})
 RETURN l.text
@@ -165,13 +165,14 @@ LIMIT 50;
 ```
 
 ## AQL
+```
 
-* 01_count_relationships](arangodb/queries_eurovoc/01_count_relationships.aql)
+* [01_count_relationships](arangodb/queries_eurovoc/01_count_relationships.aql)
 ```
 RETURN LENGTH(prefLabel)
 ```
 
-* 02_count_context_nodes](arangodb/queries_eurovoc/02_count_context_nodes.aql)
+* [02_count_context_nodes](arangodb/queries_eurovoc/02_count_context_nodes.aql)
 ```
 let startNodeId = FIRST(FOR c in concept
   FILTER c.lod_url == "http://eurovoc.europa.eu/5522"
@@ -185,7 +186,7 @@ FOR v, e, p in 1..5 OUTBOUND startNodeId
   RETURN ctx_size
 ```
 
-* 03_substring_check_simple](arangodb/queries_eurovoc/03_substring_check_simple.aql)
+* [03_substring_check_simple](arangodb/queries_eurovoc/03_substring_check_simple.aql)
 ```
 FOR l in label
   FILTER l.lang == "en"
@@ -198,7 +199,7 @@ FOR l in label
     }
 ```
 
-* 04_substring_check_complex](arangodb/queries_eurovoc/04_substring_check_complex.aql)
+* [04_substring_check_complex](arangodb/queries_eurovoc/04_substring_check_complex.aql)
 ```
 FOR l1 in label
   FILTER l1.lang == "en"
@@ -220,7 +221,7 @@ RETURN {
 }
 ```
 
-* 05b_labels_equivalence](arangodb/queries_eurovoc/05b_labels_equivalence.aql)
+* [05b_labels_equivalence](arangodb/queries_eurovoc/05b_labels_equivalence.aql)
 ```
 LET en_labels = (FOR l in label
   FILTER l.lang == "en"
@@ -252,7 +253,7 @@ RETURN {
 }
 ```
 
-* 05_labels_equivalence](arangodb/queries_eurovoc/05_labels_equivalence.aql)
+* [05_labels_equivalence](arangodb/queries_eurovoc/05_labels_equivalence.aql)
 ```
 LET en_labels = (FOR l1 in label
   FILTER l1.lang == "en"
@@ -274,7 +275,7 @@ FOR l in label
   }
 ```
 
-* 07_get_sorted_labels](arangodb/queries_eurovoc/07_get_sorted_labels.aql)
+* [07_get_sorted_labels](arangodb/queries_eurovoc/07_get_sorted_labels.aql)
 ```
 FOR l in label
   FILTER l.lang == "en"
@@ -287,7 +288,7 @@ FOR l in label
     }
 ```
 
-* 08_shortest_path](arangodb/queries_eurovoc/08_shortest_path.aql)
+* [08_shortest_path](arangodb/queries_eurovoc/08_shortest_path.aql)
 ```
 let creditId = FIRST(FOR c in concept
   FILTER c.lod_url == "http://eurovoc.europa.eu/289"
