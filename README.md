@@ -165,7 +165,6 @@ LIMIT 50;
 ```
 
 ## AQL
-```
 
 * [01_count_relationships](arangodb/queries_eurovoc/01_count_relationships.aql)
 ```
