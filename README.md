@@ -31,6 +31,10 @@ and wait for the end before starting neo4j with ``docker-compose up neo4j``
 In below commands, ``NEO4J_SRV``, ``NEO4J_SRV_LOADER``, ``REDIS_SRV`` represents
 name of docker-compose service. 
 
+## data
+Before starting test, extract archive stored in [data](data) into every db directory
+wchich will be tested.
+
 ## Neo4j
 1. ``docker-compose up NEO4J_SRV_LOADER``
 1. ``docker-compose up NEO4J_SRV``
