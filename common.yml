@@ -14,6 +14,9 @@ services:
     volumes:
       - ./results/redis:/results
       - ./redis/setup:/setup
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/users.acl:/usr/local/etc/redis/users.acl
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
   neo4j:
     image: neo4j_test

@@ -1,4 +1,6 @@
-FROM redislabs/redisgraph:2.4.6
+FROM redislabs/redisgraph:2.6.0
+# FROM redislabs/redisgraph:2.4.6
+# FROM redislabs/redisgraph:edge
 
 RUN apt update && \
     apt install -y \
