@@ -1,0 +1,36 @@
+http://regions.example.org/Afghanistan	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthernAsia
+http://regions.example.org/AlandIslands	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/NorthernEurope
+http://regions.example.org/Albania	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthernEurope
+http://regions.example.org/Algeria	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/NorthernAfrica
+http://regions.example.org/AmericanSamoa	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Polynesia
+http://regions.example.org/Andorra	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthernEurope
+http://regions.example.org/Angola	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/MiddleAfrica
+http://regions.example.org/Anguilla	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Caribbean
+http://regions.example.org/Antarctica	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Polar
+http://regions.example.org/Asia	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/NorthHemisphere
+http://regions.example.org/Europe	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/NorthHemisphere
+http://regions.example.org/AustraliaAndNewZealand	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthHemisphere
+http://regions.example.org/Africa	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthHemisphere
+http://regions.example.org/SouthHemisphere	http://www.w3.org/2004/02/skos/core#narrower	http://regions.example.org/Africa
+http://regions.example.org/SouthHemisphere	http://www.w3.org/2004/02/skos/core#narrower	http://regions.example.org/Caribbean
+http://regions.example.org/SouthHemisphere	http://www.w3.org/2004/02/skos/core#narrower	http://regions.example.org/CentralAmerica
+http://regions.example.org/Caribbean	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthHemisphere
+http://regions.example.org/CentralAmerica	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthHemisphere
+http://regions.example.org/CentralAsia	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Asia
+http://regions.example.org/EasternAfrica	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Africa
+http://regions.example.org/EasternAsia	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Asia
+http://regions.example.org/WesternEurope	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Europe
+http://regions.example.org/SouthernEurope	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Europe
+http://regions.example.org/Germany	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/WesternEurope
+http://regions.example.org/France	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/WesternEurope
+http://regions.example.org/France	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/Europe
+http://regions.example.org/Italy	http://www.w3.org/2004/02/skos/core#broader	http://regions.example.org/SouthernEurope
+http://regions.example.org/Asia	http://www.w3.org/2004/02/skos/core#prefLabel	Azja@pl
+http://regions.example.org/Asia	http://www.w3.org/2004/02/skos/core#prefLabel	Asia@en
+http://regions.example.org/Europe	http://www.w3.org/2004/02/skos/core#prefLabel	Europe@en
+http://regions.example.org/AustraliaAndNewZealand	http://www.w3.org/2004/02/skos/core#prefLabel	Australia i Nowa Zelandia@pl
+http://regions.example.org/Africa	http://www.w3.org/2004/02/skos/core#prefLabel	Afryka@pl
+http://regions.example.org/Angola	http://www.w3.org/2004/02/skos/core#prefLabel	Angola@pl
+http://regions.example.org/Angola	http://www.w3.org/2004/02/skos/core#prefLabel	Angola@en
+http://regions.example.org/EasternAfrica	http://www.w3.org/2004/02/skos/core#prefLabel	Wschodnia Afryka@pl
+http://regions.example.org/France	http://www.w3.org/2004/02/skos/core#prefLabel	Francja@pl

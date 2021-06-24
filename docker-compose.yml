@@ -43,6 +43,35 @@ services:
      - ./neo4j/import/eurovoc:/var/lib/neo4j/import
      - neo4j_data_eurovoc:/data
 
+# REGIONS
+  redis-regions:
+    extends:
+      file: common.yml
+      service: redis
+    environment:
+      RESULTS_DIR: /results/regions
+    volumes:
+      - ./redis/queries_regions:/queries
+      - ./redis/import/regions:/import
+      - redis_data_regions:/data
+
+  neo4j-regions:
+    extends:
+      file: common.yml
+      service: neo4j
+    environment:
+      RESULTS_DIR: /results/regions
+    volumes:
+     - ./neo4j/queries_regions:/queries
+     - neo4j_data_regions:/data
+
+  neo4j-loader-regions:
+    extends:
+      file: common.yml
+      service: neo4j-loader
+    volumes:
+     - ./neo4j/import/regions:/var/lib/neo4j/import
+     - neo4j_data_regions:/data
 
 # PLWN
   redis-plwn:
@@ -83,3 +112,5 @@ volumes:
   neo4j_data_plwn:
   arangodb_data_eurovoc:
   arangodb_data_plwn:
+  neo4j_data_regions:
+  redis_data_regions:

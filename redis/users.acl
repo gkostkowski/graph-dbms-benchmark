@@ -1,3 +1,3 @@
 user admin on ~* &* +@all >adminpasswd
-user default on nopass -@dangerous -@write -GRAPH.QUERY +GRAPH.RO_QUERY ~*
-user testuser on -@all +GRAPH.RO_QUERY ~* >testuserpasswd
+user default on nopass -@dangerous -@write +info +@connection -GRAPH.QUERY +GRAPH.RO_QUERY ~*
+user testuser on -@all +@connection +info +scan +select +module +type +GRAPH.RO_QUERY ~* >testuserpasswd

@@ -1,12 +1,13 @@
 import os
 from collections import defaultdict, Callable
 
-from rdflib import SKOS, OWL, RDF
+from rdflib import SKOS, OWL, RDF, RDFS
 from rdflib import URIRef, Literal
 
 SKOS_PREDICATES = SKOS._ClosedNamespace__uris
 SAME_AS = OWL.term('sameAs')
 RDF_TYPE = RDF.term('type')
+RDF_LABEL = RDFS.term('label')
 
 skos_uri_to_name_idx = {v: k for k, v in SKOS_PREDICATES.items()}
 
@@ -221,6 +222,8 @@ class Handler(object):
             self._handle_known_rel(s, rel_name, o)
         elif p == SAME_AS:
             self._handle_known_rel(s, 'sameAs', o)
+        elif p == RDF_LABEL:
+            self._handle_known_rel(s, 'prefLabel', o)
         elif p == RDF_TYPE:
             pass  # do nothing
         else:

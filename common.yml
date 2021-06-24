@@ -9,6 +9,9 @@ services:
     image: redisgraph_test
     build: ./redis
     container_name: testredisgraph
+    environment:
+      REDIS_AUTH_USER: admin
+      REDIS_AUTH_PASS: adminpasswd
     ports:
       - "6379:6379"
     volumes:

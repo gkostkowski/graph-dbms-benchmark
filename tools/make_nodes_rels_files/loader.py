@@ -132,13 +132,13 @@ class TextTriplesLoader(Loader):
                 s = self._as_rdf_entity(s_str)
                 p = self._as_rdf_entity(p_str)
                 o = self._as_rdf_entity(o_str)
+                g.add((s, p, o))
             except ValueError:
                 if self._raise_error:
                     raise
                 else:
                     log.warn(f"Cannot parse line {idx}: ({(s_str, p_str, o_str)})", 
                         exc_info=True)
-            g.add((s, p, o))
             idx += 1
         self._graph = g
 

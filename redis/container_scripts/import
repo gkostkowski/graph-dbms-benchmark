@@ -29,6 +29,8 @@ done < <(find $PWD -type f)
 # echo "$dumps_params"
 
 redisgraph-bulk-loader "$db_name" \
+	--user "$REDIS_AUTH_USER" \
+	--password "$REDIS_AUTH_PASS" \
 	--enforce-schema \
 	--separator "$sep" \
 	$dumps_params
