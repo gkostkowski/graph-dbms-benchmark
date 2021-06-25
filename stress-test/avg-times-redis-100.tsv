@@ -1,0 +1,7 @@
+/queries/01_count_relationships.cypher	134.421
+/queries/02_count_context_nodes.cypher	1.46787
+/queries/03_substring_check_simple.cypher	57.0308
+/queries/04_substring_check_complex.cypher	1896.02
+/queries/05_labels_equivalence.cypher	583.547
+/queries/06a_count_triangles.cypher	71769.1
+/queries/07_get_sorted_labels.cypher	113.192

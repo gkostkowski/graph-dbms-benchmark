@@ -1,0 +1,8 @@
+query,redisgraph,redisgraph-12,redisgraph-100
+01_count_relationships,112.49,123.46,134.421
+02_count_context_nodes,12.209376,1.37781,1.46787
+03_substring_check_simple,50.435712,51.94,57.0308
+04_substring_check_complex,1215.266497,1865.97,1896.02
+05_labels_equivalence,393.276225,556.622,583.547
+06a_count_triangles,28123.217185,72707.7,71769.1
+07_get_sorted_labels,93.304795,124.017,113.192

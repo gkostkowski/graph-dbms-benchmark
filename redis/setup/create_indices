@@ -8,4 +8,9 @@ CREATE_INDICES_COMPAT='CREATE INDEX ON :concept(lod_url);'
 # CREATE INDEX IF NOT EXISTS FOR (l:label) ON (l.text, l.lang);
 
 echo "$CREATE_INDICES_COMPAT" \
-	| redis-cli -x --raw GRAPH.QUERY "$graph_name"
+	| redis-cli \
+		--user "$REDIS_AUTH_USER" \
+		--pass "$REDIS_AUTH_PASS" \
+		-x \
+		--raw \
+		GRAPH.QUERY "$graph_name"
