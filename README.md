@@ -1,7 +1,13 @@
 # Graph database management systems benchmark
-Repository contains scripts for testing performance of following DBMS:
-- Neo4j
-- RedisGraph
+Repository contains scripts for testing performance of following Graph DBMS:
+- [ArangoDB](https://www.arangodb.com/)
+- [Neo4j](https://neo4j.com/)
+- [RedisGraph](http://redisgraph.io)
+
+# Data
+Following data have been used (included in [data directory](./data)) in this benchmark:
+- [EUROVOC](https://op.europa.eu/pl/web/eu-vocabularies/dataset/-/resource?uri=http://publications.europa.eu/resource/dataset/eurovoc) (CC-BY 4.0)
+- [PlWN](http://plwordnet.pwr.wroc.pl/wordnet/) (Wordnet licence)
 
 # Architecture
 System bases on a docker containers managed with ``docker-compose``.
@@ -26,10 +32,10 @@ and wait for the end before starting neo4j with ``docker-compose up neo4j``
 
 # launching
 **Note: this benchmarking system is not fully automated, so you must wait for**
-** finishing each of phases mentioned below before executing next one**
+**finishing each of phases mentioned below before executing next one**
 
 In below commands, ``NEO4J_SRV``, ``NEO4J_SRV_LOADER``, ``REDIS_SRV`` represents
-name of docker-compose service. 
+name of docker-compose service.
 
 ## data
 Before starting test, extract archive stored in [data](data) into every db directory
